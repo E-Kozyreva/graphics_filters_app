@@ -41,16 +41,15 @@ class MainWindow(QWidget):
         # Set main layout
         self.setLayout(main_layout)
 
+
     def on_sport_clicked(self):
         # Hide first set of buttons
         self.layout().itemAt(1).widget().hide()
         self.layout().removeItem(self.layout().itemAt(1))
 
-
         # Create filter widget
         filter_widget = QWidget(self)
         filter_layout = QVBoxLayout(filter_widget)
-
 
         # Create filter buttons
         inverion_button = QPushButton("Inversion")
@@ -70,6 +69,8 @@ class MainWindow(QWidget):
         blur_button = QPushButton("Blur")
         filter_layout.addWidget(blur_button)
 
+        inverion_button.clicked.connect(self.on_inversion_clicked)
+
         # Create return button
         return_button = QPushButton("Return")
         filter_layout.addWidget(return_button)
@@ -77,6 +78,16 @@ class MainWindow(QWidget):
 
         # Add filter widget to main layout
         self.layout().addWidget(filter_widget)
+
+    
+    def on_inversion_clicked(self):
+        img = Image.open('cat.jpg')
+        spot = classes.SpotFilters(img)
+        t1 = Thread(target=spot.inversion)
+        t1.start()
+        t1.join()
+        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/spot/inversion.jpg"))
+
 
     def on_return_clicked(self):
         # Clear layout
@@ -94,9 +105,37 @@ class MainWindow(QWidget):
         self.matrix_button.show()
         self.close_button.show()
 
-    def on_matrix_clicked(self):
-        pass
 
+    def on_matrix_clicked(self):
+        # Hide first set of buttons
+        self.layout().itemAt(1).widget().hide()
+        self.layout().removeItem(self.layout().itemAt(1))
+
+        # Create filter widget
+        filter_widget = QWidget(self)
+        filter_layout = QVBoxLayout(filter_widget)
+
+        # Create filter buttons
+        sobel_button = QPushButton("Sobel")
+        filter_layout.addWidget(sobel_button)
+        sharpen_button = QPushButton("Sharpen")
+        filter_layout.addWidget(sharpen_button)
+        emboss_button = QPushButton("Emboss")
+        filter_layout.addWidget(emboss_button)
+        edge_button = QPushButton("Edge")
+        filter_layout.addWidget(edge_button)
+        gaussian_button = QPushButton("Gaussian")
+        filter_layout.addWidget(gaussian_button)
+        median_button = QPushButton("Median")
+        filter_layout.addWidget(median_button)
+
+        # Create return button
+        return_button = QPushButton("Return")
+        filter_layout.addWidget(return_button)
+        return_button.clicked.connect(self.on_return_clicked)
+
+        # Add filter widget to main layout
+        self.layout().addWidget(filter_widget)
 
 
 if __name__ == '__main__':
