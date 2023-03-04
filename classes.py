@@ -98,7 +98,7 @@ class SpotFilters(Filters):
         bar.finish()
 
     
-    def brightness(self, value):
+    def brightness(self, value=2):
         newimg = Image.new("RGB", (self.width, self.height), "white")   
         new_pixels = []
         bar = IncrementalBar('Brightness filter', 
@@ -118,7 +118,7 @@ class SpotFilters(Filters):
         bar.finish()
 
 
-    def contrast(self, value):
+    def contrast(self, value=2):
         newimg = Image.new("RGB", (self.width, self.height), "white")   
         new_pixels = []
         bar = IncrementalBar('Contrast filter', 
@@ -138,7 +138,7 @@ class SpotFilters(Filters):
         bar.finish()
 
 
-    def gamma(self, value):
+    def gamma(self, value=2):
         newimg = Image.new("RGB", (self.width, self.height), "white")   
         new_pixels = []
         bar = IncrementalBar('Gamma filter', 
@@ -158,7 +158,7 @@ class SpotFilters(Filters):
         bar.finish()
 
 
-    def blur(self, value):
+    def blur(self, value=2):
         newimg = Image.new("RGB", (self.width, self.height), "white")   
         new_pixels = []
         bar = IncrementalBar('Blur filter', 
@@ -198,9 +198,9 @@ class MatrixFilters(Filters):
                 sumx = 0                                                           
                 sumy = 0                                                  
                 for i in range(3):                                                
-                    for j in range(3): 
-                        sumx += self.pixels[x + i - 1, y + j - 1][0] * sobelx[i][j] 
-                        sumy += self.pixels[x + i - 1, y + j - 1][0] * sobely[i][j]
+                    for j in range(3):                                 
+                        sumx += self.image.getpixel((x + i - 1, y + j - 1))[0] * sobelx[i][j] 
+                        sumy += self.image.getpixel((x + i - 1, y + j - 1))[0] * sobely[i][j] 
                 sumx = math.sqrt(sumx ** 2)                                      
                 sumy = math.sqrt(sumy ** 2)                                         
 
@@ -210,7 +210,7 @@ class MatrixFilters(Filters):
 
                 newimg.putpixel((x,y),(length, length, length))  
                 bar.next()
-        newimg.save('results/output/spot/sobel.jpg', 'JPEG')   
+        newimg.save('results/output/matrix/sobel.jpg', 'JPEG')   
         bar.finish()
 
 
@@ -238,7 +238,7 @@ class MatrixFilters(Filters):
 
                 newimg.putpixel((x,y),(length, length, length))  
                 bar.next()
-        newimg.save('results/output/spot/sharpen.jpg', 'JPEG')   
+        newimg.save('results/output/matrix/sharpen.jpg', 'JPEG')   
         bar.finish()
 
 
@@ -266,7 +266,7 @@ class MatrixFilters(Filters):
 
                 newimg.putpixel((x,y),(length, length, length))  
                 bar.next()
-        newimg.save('results/output/spot/emboss.jpg', 'JPEG')   
+        newimg.save('results/output/matrix/emboss.jpg', 'JPEG')   
         bar.finish()
 
 
@@ -294,7 +294,7 @@ class MatrixFilters(Filters):
 
                 newimg.putpixel((x,y),(length, length, length))  
                 bar.next()
-        newimg.save('results/output/spot/edge.jpg', 'JPEG')   
+        newimg.save('results/output/matrix/edge.jpg', 'JPEG')   
         bar.finish()
 
 
@@ -322,7 +322,7 @@ class MatrixFilters(Filters):
 
                 newimg.putpixel((x,y),(length, length, length))  
                 bar.next()
-        newimg.save('results/output/spot/gaussian.jpg', 'JPEG')   
+        newimg.save('results/output/matrix/gaussian.jpg', 'JPEG')   
         bar.finish()
 
 
@@ -350,5 +350,5 @@ class MatrixFilters(Filters):
 
                 newimg.putpixel((x,y),(length, length, length))  
                 bar.next()
-        newimg.save('results/output/spot/median.jpg', 'JPEG')   
+        newimg.save('results/output/matrix/median.jpg', 'JPEG')   
         bar.finish()
