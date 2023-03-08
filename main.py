@@ -22,17 +22,17 @@ class MainWindow(QWidget):
         button_layout = QVBoxLayout(button_widget)
 
         # Create sport button
-        self.sport_button = QPushButton("Sport")
+        self.sport_button = QPushButton("sport filters")
         button_layout.addWidget(self.sport_button)
         self.sport_button.clicked.connect(self.on_sport_clicked)
 
         # Create matrix button
-        self.matrix_button = QPushButton("Matrix")
+        self.matrix_button = QPushButton("matrix filters")
         button_layout.addWidget(self.matrix_button)
         self.matrix_button.clicked.connect(self.on_matrix_clicked)
 
         # Create close button
-        self.close_button = QPushButton("Close")
+        self.close_button = QPushButton("close")
         button_layout.addWidget(self.close_button)
         self.close_button.clicked.connect(self.close)
 
@@ -44,31 +44,34 @@ class MainWindow(QWidget):
 
 
     def on_sport_clicked(self):
-        # Hide first set of buttons
         self.layout().itemAt(1).widget().hide()
         self.layout().removeItem(self.layout().itemAt(1))
 
-        # Create filter widget
         filter_widget = QWidget(self)
         filter_layout = QVBoxLayout(filter_widget)
 
-        # Create filter buttons
-        inverion_button = QPushButton("Inversion")
+        inverion_button = QPushButton("inversion")
         filter_layout.addWidget(inverion_button)
-        grayscale_button = QPushButton("Grayscale")
+        grayscale_button = QPushButton("grayscale")
         filter_layout.addWidget(grayscale_button)
-        blackwhite_button = QPushButton("Black & White")
+        blackwhite_button = QPushButton("black / white")
         filter_layout.addWidget(blackwhite_button)
-        sepia_button = QPushButton("Sepia")
+        sepia_button = QPushButton("sepia")
         filter_layout.addWidget(sepia_button)
-        brightness_button = QPushButton("Brightness")
+        brightness_button = QPushButton("brightness")
         filter_layout.addWidget(brightness_button)
-        contrast_button = QPushButton("Contrast")
+        contrast_button = QPushButton("contrast")
         filter_layout.addWidget(contrast_button)
-        gamma_button = QPushButton("Gamma")
+        gamma_button = QPushButton("gamma")
         filter_layout.addWidget(gamma_button)
-        blur_button = QPushButton("Blur")
+        blur_button = QPushButton("blur")
         filter_layout.addWidget(blur_button)
+        green_button = QPushButton("green")
+        filter_layout.addWidget(green_button)
+        red_button = QPushButton("red")
+        filter_layout.addWidget(red_button)
+        blue_button = QPushButton("blue")
+        filter_layout.addWidget(blue_button)
 
         inverion_button.clicked.connect(self.on_inversion_clicked)
         grayscale_button.clicked.connect(self.on_grayscale_clicked)
@@ -78,13 +81,14 @@ class MainWindow(QWidget):
         contrast_button.clicked.connect(self.on_contrast_clicked)
         gamma_button.clicked.connect(self.on_gamma_clicked)
         blur_button.clicked.connect(self.on_blur_clicked)
+        green_button.clicked.connect(self.on_green_clicked)
+        red_button.clicked.connect(self.on_red_clicked)
+        blue_button.clicked.connect(self.on_blue_clicked)
 
-        # Create return button
-        return_button = QPushButton("Return")
+        return_button = QPushButton("return")
         filter_layout.addWidget(return_button)
         return_button.clicked.connect(self.on_return_clicked)
 
-        # Add filter widget to main layout
         self.layout().addWidget(filter_widget)
 
     
@@ -160,42 +164,76 @@ class MainWindow(QWidget):
         self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/spot/blur.jpg"))
 
 
+    def on_green_clicked(self):
+        img = Image.open('cat.jpg')
+        spot = classes.SpotFilters(img)
+        gr = Thread(target=spot.green)
+        gr.start()
+        gr.join()
+        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/spot/green.jpg"))
+
+    
+    def on_red_clicked(self):
+        img = Image.open('cat.jpg')
+        spot = classes.SpotFilters(img)
+        re = Thread(target=spot.red)
+        re.start()
+        re.join()
+        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/spot/red.jpg"))
+
+    
+    def on_blue_clicked(self):
+        img = Image.open('cat.jpg')
+        spot = classes.SpotFilters(img)
+        bl = Thread(target=spot.blue)
+        bl.start()
+        bl.join()
+        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/spot/blue.jpg"))
+
+
     def on_matrix_clicked(self):
-        # Hide first set of buttons
         self.layout().itemAt(1).widget().hide()
         self.layout().removeItem(self.layout().itemAt(1))
 
-        # Create filter widget
         filter_widget = QWidget(self)
         filter_layout = QVBoxLayout(filter_widget)
 
-        # Create filter buttons
-        sobel_button = QPushButton("Sobel")
+        sobel_button = QPushButton("sobel")
         filter_layout.addWidget(sobel_button)
-        sharpen_button = QPushButton("Sharpen")
+        sharpen_button = QPushButton("sharpen")
         filter_layout.addWidget(sharpen_button)
-        emboss_button = QPushButton("Emboss")
-        filter_layout.addWidget(emboss_button)
-        edge_button = QPushButton("Edge")
-        filter_layout.addWidget(edge_button)
-        gaussian_button = QPushButton("Gaussian")
-        filter_layout.addWidget(gaussian_button)
-        median_button = QPushButton("Median")
-        filter_layout.addWidget(median_button)
+        operator_scharra = QPushButton("operator scharra")
+        filter_layout.addWidget(operator_scharra)
+        operator_pruitt = QPushButton("operator pruitt")
+        filter_layout.addWidget(operator_pruitt)
+        waves_1_button = QPushButton("waves 1")
+        filter_layout.addWidget(waves_1_button)
+        waves_2_button = QPushButton("waves 2")
+        filter_layout.addWidget(waves_2_button)
+        mirror_button = QPushButton("mirror")
+        filter_layout.addWidget(mirror_button)
+        motion_blur_button = QPushButton("motion blur")
+        filter_layout.addWidget(motion_blur_button)
+        shift_button = QPushButton("shift")
+        filter_layout.addWidget(shift_button)
+        rotate_button = QPushButton("rotate")
+        filter_layout.addWidget(rotate_button)
 
         sobel_button.clicked.connect(self.on_sobel_clicked)
         sharpen_button.clicked.connect(self.on_sharpen_clicked)
-        emboss_button.clicked.connect(self.on_emboss_clicked)
-        edge_button.clicked.connect(self.on_edge_clicked)
-        gaussian_button.clicked.connect(self.on_gaussian_clicked)
-        median_button.clicked.connect(self.on_median_clicked)
+        operator_scharra.clicked.connect(self.on_operator_scharra_clicked)
+        operator_pruitt.clicked.connect(self.on_operator_pruitt_clicked)
+        waves_1_button.clicked.connect(self.on_waves_1_clicked)
+        waves_2_button.clicked.connect(self.on_waves_2_clicked)
+        mirror_button.clicked.connect(self.on_mirror_clicked)
+        motion_blur_button.clicked.connect(self.on_motion_blur_clicked)
+        shift_button.clicked.connect(self.on_shift_clicked)
+        rotate_button.clicked.connect(self.on_rotate_clicked)
 
-        # Create return button
-        return_button = QPushButton("Return")
+        return_button = QPushButton("return")
         filter_layout.addWidget(return_button)
         return_button.clicked.connect(self.on_return_clicked)
 
-        # Add filter widget to main layout
         self.layout().addWidget(filter_widget)
 
     
@@ -216,41 +254,77 @@ class MainWindow(QWidget):
         shar.join()
         self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/matrix/sharpen.jpg"))
 
-
-    def on_emboss_clicked(self):
-        img = Image.open('cat.jpg')
-        matrix = classes.MatrixFilters(img)
-        emb = Thread(target=matrix.emboss)
-        emb.start()
-        emb.join()
-        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/matrix/emboss.jpg"))
-
     
-    def on_edge_clicked(self):
+    def on_operator_scharra_clicked(self):
         img = Image.open('cat.jpg')
         matrix = classes.MatrixFilters(img)
-        ed = Thread(target=matrix.edge)
-        ed.start()
-        ed.join()
-        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/matrix/edge.jpg"))
+        op_scharra = Thread(target=matrix.operator_scharra)
+        op_scharra.start()
+        op_scharra.join()
+        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/matrix/operator_scharra.jpg"))
 
+
+    def on_operator_pruitt_clicked(self):
+        img = Image.open('cat.jpg')
+        matrix = classes.MatrixFilters(img)
+        op_pruitt = Thread(target=matrix.operator_pruitt)
+        op_pruitt.start()
+        op_pruitt.join()
+        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/matrix/operator_pruitt.jpg"))
+
+
+    def on_waves_1_clicked(self):
+        img = Image.open('cat.jpg')
+        matrix = classes.MatrixFilters(img)
+        wav = Thread(target=matrix.waves_1)
+        wav.start()
+        wav.join()
+        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/matrix/waves_1.jpg"))
     
-    def on_gaussian_clicked(self):
+
+    def on_waves_2_clicked(self):
         img = Image.open('cat.jpg')
         matrix = classes.MatrixFilters(img)
-        gaus = Thread(target=matrix.gaussian)
-        gaus.start()
-        gaus.join()
-        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/matrix/gaussian.jpg"))
+        wav = Thread(target=matrix.waves_2)
+        wav.start()
+        wav.join()
+        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/matrix/waves_2.jpg"))
 
 
-    def on_median_clicked(self):
+    def on_mirror_clicked(self):
         img = Image.open('cat.jpg')
         matrix = classes.MatrixFilters(img)
-        med = Thread(target=matrix.median)
-        med.start()
-        med.join()
-        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/matrix/median.jpg"))
+        mir = Thread(target=matrix.mirror)
+        mir.start()
+        mir.join()
+        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/matrix/mirror.jpg"))
+
+
+    def on_motion_blur_clicked(self):
+        img = Image.open('cat.jpg')
+        matrix = classes.MatrixFilters(img)
+        mot = Thread(target=matrix.motion_blur)
+        mot.start()
+        mot.join()
+        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/matrix/motion_blur.jpg"))
+
+
+    def on_shift_clicked(self):
+        img = Image.open('cat.jpg')
+        matrix = classes.MatrixFilters(img)
+        shi = Thread(target=matrix.shift)
+        shi.start()
+        shi.join()
+        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/matrix/shift.jpg"))
+
+
+    def on_rotate_clicked(self):
+        img = Image.open('cat.jpg')
+        matrix = classes.MatrixFilters(img)
+        rot = Thread(target=matrix.rotate)
+        rot.start()
+        rot.join()
+        self.layout().itemAt(0).widget().setPixmap(QPixmap("results/output/matrix/rotate.jpg"))
 
 
     def on_return_clicked(self):
