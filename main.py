@@ -95,6 +95,7 @@ class MainWindow(QWidget):
     def on_inversion_clicked(self):
         img = Image.open('cat.jpg')
         spot = classes.SpotFilters(img)
+
         inv = Thread(target=spot.inversion)
         inv.start()
         inv.join()
