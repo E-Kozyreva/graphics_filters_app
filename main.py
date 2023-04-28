@@ -2,7 +2,7 @@ import classes
 from threading import Thread
 from PIL import Image
 from PyQt6.QtGui import QPixmap, QFont
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton , QFileDialog
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFileDialog
 
 
 class MainWindow(QWidget):
@@ -53,6 +53,7 @@ class MainWindow(QWidget):
         self.main_layout.addWidget(button_widget)
 
         self.setLayout(self.main_layout)
+
 
     def on_select_image_button_clicked(self):
         self.file_name, _ = QFileDialog.getOpenFileName(self, "Select Image", "", "Image Files (*.jpg *.png *.bmp)")

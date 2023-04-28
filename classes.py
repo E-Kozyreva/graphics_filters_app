@@ -104,7 +104,7 @@ class SpotFilters(Filters):
             
         bar.next()
         self.newimg.putdata(self.new_pixels)
-        bar,next()
+        bar.next()
         self.newimg.save('results/output/spot/contrast.jpg', 'JPEG')
         bar.next()
         bar.finish()
