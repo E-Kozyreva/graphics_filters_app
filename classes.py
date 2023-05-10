@@ -2,6 +2,7 @@ import math
 import random
 from progress.bar import ChargingBar
 from PIL import Image, ImageChops
+import numpy as np
 
 
 class Filters:
@@ -24,7 +25,7 @@ class SpotFilters(Filters):
         bar.next()
         self.newimg.putdata(self.new_pixels)
         bar.next()
-        self.newimg.save('results/output/spot/inversion.jpg', 'JPEG')
+        self.newimg.save('Results/Spot_filters/Inversion.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
@@ -40,7 +41,7 @@ class SpotFilters(Filters):
         bar.next()
         self.newimg.putdata(self.new_pixels)
         bar.next()
-        self.newimg.save('results/output/spot/grayscale.jpg', 'JPEG')
+        self.newimg.save('Results/Spot_filters/Grayscale.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
@@ -57,7 +58,7 @@ class SpotFilters(Filters):
         bar.next()
         self.newimg.putdata(self.new_pixels)
         bar.next()
-        self.newimg.save('results/output/spot/blackwhite.jpg', 'JPEG')
+        self.newimg.save('Results/Spot_filters/Black_white.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
@@ -73,7 +74,7 @@ class SpotFilters(Filters):
         bar.next()
         self.newimg.putdata(self.new_pixels)
         bar.next()
-        self.newimg.save('results/output/spot/sepia.jpg', 'JPEG')
+        self.newimg.save('Results/Spot_filters/Sepia.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
@@ -89,7 +90,7 @@ class SpotFilters(Filters):
         bar.next()
         self.newimg.putdata(self.new_pixels)
         bar.next()
-        self.newimg.save('results/output/spot/brightness.jpg', 'JPEG')
+        self.newimg.save('Results/Spot_filters/Brightness.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
@@ -105,7 +106,7 @@ class SpotFilters(Filters):
         bar.next()
         self.newimg.putdata(self.new_pixels)
         bar.next()
-        self.newimg.save('results/output/spot/contrast.jpg', 'JPEG')
+        self.newimg.save('Results/Spot_filters/Contrast.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
@@ -121,7 +122,7 @@ class SpotFilters(Filters):
         bar.next()
         self.newimg.putdata(self.new_pixels)
         bar.next()
-        self.newimg.save('results/output/spot/gamma.jpg', 'JPEG')
+        self.newimg.save('Results/Spot_filters/Gamma.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
@@ -137,7 +138,7 @@ class SpotFilters(Filters):
         bar.next()
         self.newimg.putdata(self.new_pixels)
         bar.next()
-        self.newimg.save('results/output/spot/blur.jpg', 'JPEG')
+        self.newimg.save('Results/Spot_filters/Blur.jpg', 'JPEG')
         bar.next()
         bar.finish()    
 
@@ -151,7 +152,7 @@ class SpotFilters(Filters):
         bar.next()
         self.newimg.putdata(self.new_pixels)
         bar.next()
-        self.newimg.save('results/output/spot/green.jpg', 'JPEG')
+        self.newimg.save('Results/Spot_filters/Green.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
@@ -165,7 +166,7 @@ class SpotFilters(Filters):
         bar.next()
         self.newimg.putdata(self.new_pixels)
         bar.next()
-        self.newimg.save('results/output/spot/red.jpg', 'JPEG')
+        self.newimg.save('Results/Spot_filters/Red.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
@@ -179,7 +180,7 @@ class SpotFilters(Filters):
         bar.next()
         self.newimg.putdata(self.new_pixels)
         bar.next()
-        self.newimg.save('results/output/spot/blue.jpg', 'JPEG')
+        self.newimg.save('Results/Spot_filters/Blue.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
@@ -208,7 +209,7 @@ class MatrixFilters(Filters):
                 self.newimg.putpixel((x, y), (length, length, length))  
 
         bar.next()
-        self.newimg.save('results/output/matrix/sobel.jpg', 'JPEG')  
+        self.newimg.save('Results/Matrix_filters/Sobel.jpg', 'JPEG')  
         bar.next() 
         bar.finish()
 
@@ -241,7 +242,7 @@ class MatrixFilters(Filters):
                 self.newimg.putpixel((x, y), (new_r, new_g, new_b))     
                 
         bar.next()
-        self.newimg.save('results/output/matrix/sharpen.jpg', 'JPEG')   
+        self.newimg.save('Results/Matrix_filters/Sharpen.jpg', 'JPEG')   
         bar.next()
         bar.finish()
 
@@ -269,7 +270,7 @@ class MatrixFilters(Filters):
                 self.newimg.putpixel((x, y), (length, length, length))
                 
         bar.next()
-        self.newimg.save('results/output/matrix/operator_scharra.jpg', 'JPEG')
+        self.newimg.save('Results/Matrix_filters/Operator_scharra.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
@@ -297,7 +298,7 @@ class MatrixFilters(Filters):
                 self.newimg.putpixel((x, y), (length, length, length))
                 
         bar.next()
-        self.newimg.save('results/output/matrix/operator_pruitt.jpg', 'JPEG')
+        self.newimg.save('Results/Matrix_filters/Operator_pruitt.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
@@ -316,7 +317,7 @@ class MatrixFilters(Filters):
                 self.newimg.putpixel((x, y), self.image.getpixel((new_x, new_y)))
                 
         bar.next()
-        self.newimg.save('results/output/matrix/waves_1.jpg', 'JPEG')
+        self.newimg.save('Results/Matrix_filters/Waves_1.jpg', 'JPEG')
         bar.next()
         bar.finish()
     
@@ -335,36 +336,11 @@ class MatrixFilters(Filters):
                 self.newimg.putpixel((x, y), self.image.getpixel((int(new_x), int(new_y))))
                 
         bar.next()
-        self.newimg.save('results/output/matrix/waves_2.jpg', 'JPEG')
+        self.newimg.save('Results/Matrix_filters/Waves_2.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
     
-    def mirror(self):
-        bar = ChargingBar('Mirror filter', max = 2, fill = '▰', suffix='%(percent)d%%')
-        
-        for x in range(self.width):
-            for y in range(self.height):
-                new_x = x + (random.random() - 0.5) * 10
-                new_y = y + (random.random() - 0.5) * 10
-
-                if new_x < 0:
-                    new_x = 0
-                if new_x > self.width - 1:
-                    new_x = self.width - 1
-                if new_y < 0:
-                    new_y = 0
-                if new_y > self.height - 1:
-                    new_y = self.height - 1
-
-                self.newimg.putpixel((x, y), self.image.getpixel((int(new_x), int(new_y)))) 
-                
-        bar.next()
-        self.newimg.save('results/output/matrix/mirror.jpg', 'JPEG')
-        bar.next()
-        bar.finish()
-
-
     def motion_blur(self):
         bar = ChargingBar('Motion blur filter', max = 2, fill = '▰', suffix='%(percent)d%%')        
 
@@ -386,7 +362,7 @@ class MatrixFilters(Filters):
                 self.newimg.putpixel((x, y), (int(r), int(g), int(b)))
 
         bar.next()
-        self.newimg.save('results/output/matrix/motion_blur.jpg', 'JPEG')
+        self.newimg.save('Results/Matrix_filters/Motion_blur.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
@@ -409,7 +385,7 @@ class MatrixFilters(Filters):
                 self.newimg.putpixel((x, y), self.image.getpixel((int(new_x), int(new_y))))
                 
         bar.next()
-        self.newimg.save('results/output/matrix/shift.jpg', 'JPEG')
+        self.newimg.save('Results/Matrix_filters/Shift.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
@@ -434,7 +410,7 @@ class MatrixFilters(Filters):
                 self.newimg.putpixel((x, y), self.image.getpixel((int(new_x), int(new_y))))
                 
         bar.next()
-        self.newimg.save('results/output/matrix/rotate.jpg', 'JPEG')
+        self.newimg.save('Results/Matrix_filters/Rotate.jpg', 'JPEG')
         bar.next()
         bar.finish()
 
@@ -462,7 +438,7 @@ class MathMorph(Filters):
                 self.newimg.putpixel((x, y), (result_r, result_g, result_b))
                 
         bar.next()
-        self.newimg.save('results/output/math_morph/dilate.jpg', 'JPEG')
+        self.newimg.save('Results/Math_morph_filters/Dilate.jpg', 'JPEG')
         bar.next()
         bar.finish()
         
@@ -489,7 +465,7 @@ class MathMorph(Filters):
                 self.newimg.putpixel((x, y), (result_r, result_g, result_b))
                 
         bar.next()
-        self.newimg.save('results/output/math_morph/erode.jpg', 'JPEG')
+        self.newimg.save('Results/Math_morph_filters/Erode.jpg', 'JPEG')
         bar.next()
         bar.finish()
         
@@ -501,7 +477,7 @@ class MathMorph(Filters):
         bar.next()
         self.dilate()
         bar.next()
-        self.newimg.save('results/output/math_morph/opened.jpg', 'JPEG')
+        self.newimg.save('Results/Math_morph_filters/Opened.jpg', 'JPEG')
         bar.finish()
         
     
@@ -512,7 +488,7 @@ class MathMorph(Filters):
         bar.next()
         self.erode()
         bar.next()
-        self.newimg.save('results/output/math_morph/closed.jpg', 'JPEG')
+        self.newimg.save('Results/Math_morph_filters/Closed.jpg', 'JPEG')
         bar.finish()
         
 
@@ -527,7 +503,7 @@ class MathMorph(Filters):
                 b = self.image.getpixel((x, y))[2] - self.newimg.getpixel((x, y))[2]
                 self.newimg.putpixel((x, y), (r, g, b))
         bar.next()
-        self.newimg.save('results/output/math_morph/top_hat.jpg', 'JPEG')
+        self.newimg.save('Results/Math_morph_filters/Top_hat.jpg', 'JPEG')
         bar.finish()
         
 
@@ -542,7 +518,7 @@ class MathMorph(Filters):
                 b = self.newimg.getpixel((x, y))[2] - self.image.getpixel((x, y))[2]
                 self.newimg.putpixel((x, y), (r, g, b))
         bar.next()
-        self.newimg.save('results/output/math_morph/black_hat.jpg', 'JPEG')
+        self.newimg.save('Results/Math_morph_filters/Black_hat.jpg', 'JPEG')
         bar.finish()
         
     
@@ -559,13 +535,14 @@ class MathMorph(Filters):
                 self.newimg.putpixel((x, y), (r, g, b))
                 
         bar.next()
-        self.newimg.save('results/output/math_morph/grad.jpg', 'JPEG')
+        self.newimg.save('Results/Math_morph_filters/Grad.jpg', 'JPEG')
         bar.finish()
         
     
-class Others(Filters):
+class Other(Filters):
     def gray_world(self):
-        bar = ChargingBar('Gray world filter', max = 1, fill = '▰', suffix='%(percent)d%%')
+        bar = ChargingBar('Gray world filter', max = 2, fill = '▰', suffix='%(percent)d%%')
+        
         avg_r = 0
         avg_g = 0
         avg_b = 0
@@ -585,5 +562,87 @@ class Others(Filters):
                 b = self.image.getpixel((x, y))[2] * avg / avg_b
                 self.newimg.putpixel((x, y), (int(r), int(g), int(b)))
         bar.next()
-        self.newimg.save('results/output/others/gray_world.jpg', 'JPEG')
+        self.newimg.save('Results/Other_filters/Gray_world.jpg', 'JPEG')
+        bar.next()
         bar.finish()
+        
+        
+    def glass(self):
+        bar = ChargingBar('Glass filter', max = 2, fill = '▰', suffix='%(percent)d%%')
+        
+        for x in range(self.width):
+            for y in range(self.height):
+                res_x = (int)(x + (random.random() - 0.5) * 10)
+                res_y = (int)(y + (random.random() - 0.5) * 10)
+                
+                res_x = np.clip(res_x, 0, self.width - 1)
+                res_y = np.clip(res_y, 0, self.height - 1)
+                
+                self.newimg.putpixel((x, y), self.image.getpixel((res_x, res_y)))
+        bar.next()
+        self.newimg.save('Results/Other_filters/Glass.jpg', 'JPEG')
+        bar.next()
+        bar.finish()
+        
+    
+    def histogram_linear_stretch(self):
+        bar = ChargingBar('Histogram linear stretch filter', max = 2, fill = '▰', suffix='%(percent)d%%')
+        
+        r_min = 255
+        g_min = 255
+        b_min = 255
+        r_max = 0
+        g_max = 0
+        b_max = 0
+        for x in range(self.width):
+            for y in range(self.height):
+                r_min = min(r_min, self.image.getpixel((x, y))[0])
+                g_min = min(g_min, self.image.getpixel((x, y))[1])
+                b_min = min(b_min, self.image.getpixel((x, y))[2])
+                r_max = max(r_max, self.image.getpixel((x, y))[0])
+                g_max = max(g_max, self.image.getpixel((x, y))[1])
+                b_max = max(b_max, self.image.getpixel((x, y))[2])
+        for x in range(self.width):
+            for y in range(self.height):
+                r = (self.image.getpixel((x, y))[0] - r_min) * 255 / (r_max - r_min)
+                g = (self.image.getpixel((x, y))[1] - g_min) * 255 / (g_max - g_min)
+                b = (self.image.getpixel((x, y))[2] - b_min) * 255 / (b_max - b_min)
+                self.newimg.putpixel((x, y), (int(r), int(g), int(b)))
+        bar.next()
+        self.newimg.save('Results/Other_filters/Histogram_linear_stretch.jpg', 'JPEG')
+        bar.next()
+        bar.finish()
+        
+        
+    def correction_with_reference_color(self):
+        bar = ChargingBar('Correction with reference color filter', max = 2, fill = '▰', suffix='%(percent)d%%')
+        
+        r_ref = 0
+        g_ref = 0
+        b_ref = 0
+        for x in range(self.width):
+            for y in range(self.height):
+                r_ref += self.image.getpixel((x, y))[0]
+                g_ref += self.image.getpixel((x, y))[1]
+                b_ref += self.image.getpixel((x, y))[2]
+        r_ref /= self.width * self.height
+        g_ref /= self.width * self.height
+        b_ref /= self.width * self.height
+        for x in range(self.width):
+            for y in range(self.height):
+                r = self.image.getpixel((x, y))[0] * r_ref / 255
+                g = self.image.getpixel((x, y))[1] * g_ref / 255
+                b = self.image.getpixel((x, y))[2] * b_ref / 255
+                self.newimg.putpixel((x, y), (int(r), int(g), int(b)))
+        bar.next()
+        self.newimg.save('Results/Other_filters/Correction_with_reference_color.jpg', 'JPEG')
+        bar.next()
+        bar.finish()
+        
+    
+    def median(self):
+        pass
+    
+    
+    def glowing_edges(self):
+        pass
