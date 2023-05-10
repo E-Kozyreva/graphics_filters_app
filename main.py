@@ -16,7 +16,7 @@ class MainWindow(QWidget):
         self.setGeometry(self.left, self.top, self.width, self.height)
         self.setStyleSheet("background-color: #EDEDED;")
 
-        self.file_name = "cat.jpg"
+        self.file_name = "temp.jpg"
 
         self.picture_widget = QLabel(self)
         self.picture_widget.setPixmap(QPixmap(self.file_name))
@@ -30,11 +30,19 @@ class MainWindow(QWidget):
         self.select_image_button = QPushButton("Select image")
         self.sport_button = QPushButton("Sport filters")
         self.matrix_button = QPushButton("Matrix filters")
+        self.mathmorph_button = QPushButton("Math. morph.")
         self.close_button = QPushButton("Close")
 
-        buttons = [self.select_image_button, self.sport_button, self.matrix_button]
+        buttons = [self.select_image_button, 
+                   self.sport_button, 
+                   self.matrix_button, 
+                   self.mathmorph_button]
 
-        buttons_click = [self.on_select_image_button_clicked, self.on_sport_clicked, self.on_matrix_clicked, self.on_close_clicked]
+        buttons_click = [self.on_select_image_button_clicked, 
+                         self.on_sport_clicked, 
+                         self.on_matrix_clicked,
+                         self.on_mathmorph_clicked, 
+                         self.on_close_clicked]
 
         for button in range(len(buttons)):
             button_layout.addWidget(buttons[button])
@@ -48,10 +56,9 @@ class MainWindow(QWidget):
         self.close_button.clicked.connect(self.on_close_clicked)
 
         button_widget.setFixedSize(130, 600)
-        self.picture_widget.setFixedSize(550, 550)
+        self.picture_widget.setFixedSize(600, 600)
         
         self.main_layout.addWidget(button_widget)
-
         self.setLayout(self.main_layout)
 
 
@@ -452,12 +459,165 @@ class MainWindow(QWidget):
         self.picture_widget.setPixmap(pixmap)
         self.picture_widget.setFixedSize(600, 600)
 
+    
+    def on_mathmorph_clicked(self):
+        self.layout().itemAt(1).widget().hide()
+        self.layout().removeItem(self.layout().itemAt(1))
 
+        filter_widget = QWidget(self)
+        filter_layout = QVBoxLayout(filter_widget)
+
+        dilate_button = QPushButton("Dilate")
+        erode_button = QPushButton("Erode")
+        open_button = QPushButton("Open")
+        closef_button = QPushButton("Close")
+        top_hat_button = QPushButton("Top hat")
+        black_hat_button = QPushButton("Black hat")
+        grad_button = QPushButton("Grad")
+        
+        return_button = QPushButton("Return")
+
+        buttons = [dilate_button, erode_button, 
+                   open_button, closef_button, 
+                   top_hat_button, black_hat_button,
+                   grad_button]
+
+        buttons_click = [self.on_dilate_clicked, 
+                         self.on_erode_clicked, 
+                         self.on_opened_clicked,
+                         self.on_closed_clicked,
+                         self.on_top_hat_clicked,
+                         self.on_black_hat_clicked,
+                         self.on_grad_clicked,
+                         self.on_close_clicked,]
+
+        for button in range(len(buttons)):
+            filter_layout.addWidget(buttons[button])
+            buttons[button].setStyleSheet("background-color: #ED760E; color: white; border-radius: 5px; padding: 5px;")
+            buttons[button].setFont(QFont("Arial", 9, QFont.Weight.Bold))
+            buttons[button].clicked.connect(buttons_click[button])
+
+        filter_layout.addWidget(return_button)
+        return_button.setStyleSheet("background-color: black; color: white; border-radius: 5px; padding: 5px;")
+        return_button.setFont(QFont("Arial", 9, QFont.Weight.Bold))
+        return_button.clicked.connect(self.on_return_clicked)
+
+        filter_widget.setFixedSize(130, 600)
+
+        self.layout().addWidget(filter_widget)
+
+
+    def on_dilate_clicked(self):
+        img = Image.open(self.file_name)
+        mathmorph = classes.MathMorph(img)
+
+        dil = Thread(target=mathmorph.dilate)
+        dil.start()
+        dil.join()
+        
+        pixmap = QPixmap("results/output/math_morph/dilate.jpg")
+        pixmap = pixmap.scaled(600, 600)
+        self.picture_widget.setPixmap(pixmap)
+        self.picture_widget.setFixedSize(600, 600)
+
+
+    def on_erode_clicked(self):
+        img = Image.open(self.file_name)
+        mathmorph = classes.MathMorph(img)
+
+        ero = Thread(target=mathmorph.erode)
+        ero.start()
+        ero.join()
+        
+        pixmap = QPixmap("results/output/math_morph/erode.jpg")
+        pixmap = pixmap.scaled(600, 600)
+        self.picture_widget.setPixmap(pixmap)
+        self.picture_widget.setFixedSize(600, 600)
+
+
+    def on_opened_clicked(self):
+        img = Image.open(self.file_name)
+        mathmorph = classes.MathMorph(img)
+
+        opn = Thread(target=mathmorph.opened)
+        opn.start()
+        opn.join()
+        
+        pixmap = QPixmap("results/output/math_morph/opened.jpg")
+        pixmap = pixmap.scaled(600, 600)
+        self.picture_widget.setPixmap(pixmap)
+        self.picture_widget.setFixedSize(600, 600)
+
+
+    def on_closed_clicked(self):
+        img = Image.open(self.file_name)
+        mathmorph = classes.MathMorph(img)
+
+        clo = Thread(target=mathmorph.closed)
+        clo.start()
+        clo.join()
+        
+        pixmap = QPixmap("results/output/math_morph/closed.jpg")
+        pixmap = pixmap.scaled(600, 600)
+        self.picture_widget.setPixmap(pixmap)
+        self.picture_widget.setFixedSize(600, 600)
+
+
+    def on_top_hat_clicked(self):
+        img = Image.open(self.file_name)
+        mathmorph = classes.MathMorph(img)
+
+        gra = Thread(target=mathmorph.top_hat)
+        gra.start()
+        gra.join()
+        
+        pixmap = QPixmap("results/output/math_morph/top_hat.jpg")
+        pixmap = pixmap.scaled(600, 600)
+        self.picture_widget.setPixmap(pixmap)
+        self.picture_widget.setFixedSize(600, 600)
+
+    
+    def on_black_hat_clicked(self):
+        img = Image.open(self.file_name)
+        mathmorph = classes.MathMorph(img)
+
+        blh = Thread(target=mathmorph.black_hat)
+        blh.start()
+        blh.join()
+        
+        pixmap = QPixmap("results/output/math_morph/black_hat.jpg")
+        pixmap = pixmap.scaled(600, 600)
+        self.picture_widget.setPixmap(pixmap)
+        self.picture_widget.setFixedSize(600, 600)
+
+    
+    def on_grad_clicked(self):
+        img = Image.open(self.file_name)
+        mathmorph = classes.MathMorph(img)
+
+        gra = Thread(target=mathmorph.grad)
+        gra.start()
+        gra.join()
+        
+        pixmap = QPixmap("results/output/math_morph/grad.jpg")
+        pixmap = pixmap.scaled(600, 600)
+        self.picture_widget.setPixmap(pixmap)
+        self.picture_widget.setFixedSize(600, 600)
+        
+            
+    def on_others_clicked(self):
+        pass
+    
+    
     def on_return_clicked(self):
         self.layout().itemAt(1).widget().hide()
         self.layout().removeItem(self.layout().itemAt(1))
 
-        buttons = [self.select_image_button, self.sport_button, self.matrix_button, self.close_button]
+        buttons = [self.select_image_button, 
+                   self.sport_button, 
+                   self.matrix_button,
+                   self.mathmorph_button,
+                   self.close_button]
 
         button_widget = QWidget(self)
         button_layout = QVBoxLayout(button_widget)

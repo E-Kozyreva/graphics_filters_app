@@ -1,7 +1,7 @@
 import math
 import random
 from progress.bar import ChargingBar
-from PIL import Image
+from PIL import Image, ImageChops
 
 
 class Filters:
@@ -415,6 +415,7 @@ class MatrixFilters(Filters):
 
 
     def rotate(self):
+
         bar = ChargingBar('Rotate filter', max = 2, fill = '▰', suffix='%(percent)d%%')        
         
         for x in range(self.width):
@@ -435,4 +436,154 @@ class MatrixFilters(Filters):
         bar.next()
         self.newimg.save('results/output/matrix/rotate.jpg', 'JPEG')
         bar.next()
+        bar.finish()
+
+
+class MathMorph(Filters):
+    def dilate(self):
+        bar = ChargingBar('Dilate filter', max = 2, fill = '▰', suffix='%(percent)d%%')
+        
+        for x in range(self.width):
+            for y in range(self.height):
+                result_r = 0
+                result_g = 0
+                result_b = 0
+                for i in range(-1, 2):
+                    for j in range(-1, 2):
+                        if x + i < 0 or x + i > self.width - 1 or y + j < 0 or y + j > self.height - 1:
+                            continue
+                        pixel = self.image.getpixel((x + i, y + j))
+                        if pixel[0] > result_r:
+                            result_r = pixel[0]
+                        if pixel[1] > result_g:
+                            result_g = pixel[1]
+                        if pixel[2] > result_b:
+                            result_b = pixel[2]
+                self.newimg.putpixel((x, y), (result_r, result_g, result_b))
+                
+        bar.next()
+        self.newimg.save('results/output/math_morph/dilate.jpg', 'JPEG')
+        bar.next()
+        bar.finish()
+        
+        
+    def erode(self):
+        bar = ChargingBar('Erode filter', max = 2, fill = '▰', suffix='%(percent)d%%')
+        
+        for x in range(self.width):
+            for y in range(self.height):
+                result_r = 255
+                result_g = 255
+                result_b = 255
+                for i in range(-1, 2):
+                    for j in range(-1, 2):
+                        if x + i < 0 or x + i > self.width - 1 or y + j < 0 or y + j > self.height - 1:
+                            continue
+                        pixel = self.image.getpixel((x + i, y + j))
+                        if pixel[0] < result_r:
+                            result_r = pixel[0]
+                        if pixel[1] < result_g:
+                            result_g = pixel[1]
+                        if pixel[2] < result_b:
+                            result_b = pixel[2]
+                self.newimg.putpixel((x, y), (result_r, result_g, result_b))
+                
+        bar.next()
+        self.newimg.save('results/output/math_morph/erode.jpg', 'JPEG')
+        bar.next()
+        bar.finish()
+        
+    
+    def opened(self):
+        bar = ChargingBar('Opened filter', max = 2, fill = '▰', suffix='%(percent)d%%')
+        
+        self.erode()
+        bar.next()
+        self.dilate()
+        bar.next()
+        self.newimg.save('results/output/math_morph/opened.jpg', 'JPEG')
+        bar.finish()
+        
+    
+    def closed(self):
+        bar = ChargingBar('Closed filter', max = 2, fill = '▰', suffix='%(percent)d%%')
+        
+        self.dilate()
+        bar.next()
+        self.erode()
+        bar.next()
+        self.newimg.save('results/output/math_morph/closed.jpg', 'JPEG')
+        bar.finish()
+        
+
+    def top_hat(self):
+        bar = ChargingBar('Top hat filter', max = 2, fill = '▰', suffix='%(percent)d%%')
+        self.erode()
+        bar.next()
+        for x in range(self.width):
+            for y in range(self.height):
+                r = self.image.getpixel((x, y))[0] - self.newimg.getpixel((x, y))[0]
+                g = self.image.getpixel((x, y))[1] - self.newimg.getpixel((x, y))[1]
+                b = self.image.getpixel((x, y))[2] - self.newimg.getpixel((x, y))[2]
+                self.newimg.putpixel((x, y), (r, g, b))
+        bar.next()
+        self.newimg.save('results/output/math_morph/top_hat.jpg', 'JPEG')
+        bar.finish()
+        
+
+    def black_hat(self):    
+        bar = ChargingBar('Black hat filter', max = 2, fill = '▰', suffix='%(percent)d%%')
+        self.dilate()
+        bar.next()
+        for x in range(self.width):
+            for y in range(self.height):
+                r = self.newimg.getpixel((x, y))[0] - self.image.getpixel((x, y))[0]
+                g = self.newimg.getpixel((x, y))[1] - self.image.getpixel((x, y))[1]
+                b = self.newimg.getpixel((x, y))[2] - self.image.getpixel((x, y))[2]
+                self.newimg.putpixel((x, y), (r, g, b))
+        bar.next()
+        self.newimg.save('results/output/math_morph/black_hat.jpg', 'JPEG')
+        bar.finish()
+        
+    
+    def grad(self):
+        bar = ChargingBar('Grad filter', max = 2, fill = '▰', suffix='%(percent)d%%')
+        self.closed()
+        bar.next()
+        
+        for x in range(self.width):
+            for y in range(self.height):
+                r = self.image.getpixel((x, y))[0] - self.newimg.getpixel((x, y))[0]
+                g = self.image.getpixel((x, y))[1] - self.newimg.getpixel((x, y))[1]
+                b = self.image.getpixel((x, y))[2] - self.newimg.getpixel((x, y))[2]
+                self.newimg.putpixel((x, y), (r, g, b))
+                
+        bar.next()
+        self.newimg.save('results/output/math_morph/grad.jpg', 'JPEG')
+        bar.finish()
+        
+    
+class Others(Filters):
+    def gray_world(self):
+        bar = ChargingBar('Gray world filter', max = 1, fill = '▰', suffix='%(percent)d%%')
+        avg_r = 0
+        avg_g = 0
+        avg_b = 0
+        for x in range(self.width):
+            for y in range(self.height):
+                avg_r += self.image.getpixel((x, y))[0]
+                avg_g += self.image.getpixel((x, y))[1]
+                avg_b += self.image.getpixel((x, y))[2]
+        avg_r /= self.width * self.height
+        avg_g /= self.width * self.height
+        avg_b /= self.width * self.height
+        avg = (avg_r + avg_g + avg_b) / 3
+        for x in range(self.width):
+            for y in range(self.height):
+                r = self.image.getpixel((x, y))[0] * avg / avg_r
+                g = self.image.getpixel((x, y))[1] * avg / avg_g
+                b = self.image.getpixel((x, y))[2] * avg / avg_b
+                self.newimg.putpixel((x, y), (int(r), int(g), int(b)))
+        bar.next()
+        self.newimg.save('results/output/others/gray_world.jpg', 'JPEG')
         bar.finish()
