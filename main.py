@@ -103,15 +103,15 @@ class WidSpotFilters():
         self.picture_widget.setFixedSize(600, 600)
 
 
-    def on_blur_clicked(self):
+    def on_blackout_clicked(self):
         img = Image.open(self.file_name)
         spot = classes.SpotFilters(img)
 
-        bl = Thread(target=spot.blur)
+        bl = Thread(target=spot.blackout)
         bl.start()
         bl.join()
         
-        pixmap = QPixmap("Results/Spot_filters/Blur.jpg")
+        pixmap = QPixmap("Results/Spot_filters/Blackout.jpg")
         pixmap = pixmap.scaled(600, 600)
         self.picture_widget.setPixmap(pixmap)
         self.picture_widget.setFixedSize(600, 600)
@@ -267,6 +267,20 @@ class WidMatrixFilters():
         shi.join()
         
         pixmap = QPixmap("Results/Matrix_filters/Shift.jpg")
+        pixmap = pixmap.scaled(600, 600)
+        self.picture_widget.setPixmap(pixmap)
+        self.picture_widget.setFixedSize(600, 600)
+
+    
+    def on_gaussian_filter_clicked(self):
+        img = Image.open(self.file_name)
+        matrix = classes.MatrixFilters(img)
+
+        gua = Thread(target=matrix.guassian)
+        gua.start()
+        gua.join()
+        
+        pixmap = QPixmap("Results/Matrix_filters/Gaussian.jpg")
         pixmap = pixmap.scaled(600, 600)
         self.picture_widget.setPixmap(pixmap)
         self.picture_widget.setFixedSize(600, 600)
@@ -561,7 +575,7 @@ class MainWindow(QWidget, WidSpotFilters, WidMatrixFilters, WidMathMorphFilters,
         brightness_button = QPushButton("Brightness")
         contrast_button = QPushButton("Contrast")
         gamma_button = QPushButton("Gamma")
-        blur_button = QPushButton("Blur")
+        blackout_button = QPushButton("Blackout")
         green_button = QPushButton("Green")
         red_button = QPushButton("Red")
         blue_button = QPushButton("Blue")
@@ -569,12 +583,12 @@ class MainWindow(QWidget, WidSpotFilters, WidMatrixFilters, WidMathMorphFilters,
         return_button = QPushButton("Return")
 
         buttons = [inverion_button, grayscale_button, blackwhite_button, sepia_button, 
-                   brightness_button, contrast_button, gamma_button, blur_button, 
+                   brightness_button, contrast_button, gamma_button, blackout_button, 
                    green_button, red_button, blue_button]
 
         buttons_click = [self.on_inversion_clicked, self.on_grayscale_clicked, self.on_blackwhite_clicked,
                             self.on_sepia_clicked, self.on_brightness_clicked, self.on_contrast_clicked,
-                            self.on_gamma_clicked, self.on_blur_clicked, self.on_green_clicked,
+                            self.on_gamma_clicked, self.on_blackout_clicked, self.on_green_clicked,
                             self.on_red_clicked, self.on_blue_clicked]
 
         for button in range(len(buttons)):
@@ -609,16 +623,18 @@ class MainWindow(QWidget, WidSpotFilters, WidMatrixFilters, WidMathMorphFilters,
         motion_blur_button = QPushButton("Motion blur")
         shift_button = QPushButton("Shift")
         rotate_button = QPushButton("Rotate")
+        gaussian_button = QPushButton("Gaussian")
         
         return_button = QPushButton("Return")
 
         buttons = [sobel_button, sharpen_button, operator_scharra, operator_pruitt, 
                    waves_1_button, waves_2_button, motion_blur_button, 
-                   shift_button, rotate_button]
+                   shift_button, rotate_button, gaussian_button]
 
         buttons_click = [self.on_sobel_clicked, self.on_sharpen_clicked, self.on_operator_scharra_clicked,
                          self.on_operator_pruitt_clicked, self.on_waves_1_clicked, self.on_waves_2_clicked,
-                         self.on_motion_blur_clicked, self.on_shift_clicked, self.on_rotate_clicked]
+                         self.on_motion_blur_clicked, self.on_shift_clicked, self.on_rotate_clicked,
+                         self.on_gaussian_filter_clicked]
 
         for button in range(len(buttons)):
             filter_layout.addWidget(buttons[button])

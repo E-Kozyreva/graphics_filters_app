@@ -20,7 +20,9 @@ class SpotFilters(Filters):
         bar = ChargingBar('Inversion filter', max = 3, fill = '▰', suffix='%(percent)d%%')
         
         for pixel in self.pixels:
-            self.new_pixels.append((255 - pixel[0], 255 - pixel[1], 255 - pixel[2]))
+            self.new_pixels.append((255 - pixel[0], 
+                                    255 - pixel[1], 
+                                    255 - pixel[2]))
 
         bar.next()
         self.newimg.putdata(self.new_pixels)
@@ -79,7 +81,7 @@ class SpotFilters(Filters):
         bar.finish()
 
     
-    def brightness(self, value=2):
+    def brightness(self, value=50):
         bar = ChargingBar('Brightness filter', max = 3, fill = '▰', suffix='%(percent)d%%')
 
         for pixel in self.pixels:
@@ -127,8 +129,8 @@ class SpotFilters(Filters):
         bar.finish()
 
 
-    def blur(self, value=2):
-        bar = ChargingBar('Blur filter', max = 3, fill = '▰', suffix='%(percent)d%%')
+    def blackout(self, value=5):
+        bar = ChargingBar('Blackout filter', max = 3, fill = '▰', suffix='%(percent)d%%')
         
         for pixel in self.pixels:
             self.new_pixels.append((int(pixel[0] / value), 
@@ -138,7 +140,7 @@ class SpotFilters(Filters):
         bar.next()
         self.newimg.putdata(self.new_pixels)
         bar.next()
-        self.newimg.save('Results/Spot_filters/Blur.jpg', 'JPEG')
+        self.newimg.save('Results/Spot_filters/Blackout.jpg', 'JPEG')
         bar.next()
         bar.finish()    
 
@@ -415,6 +417,43 @@ class MatrixFilters(Filters):
         bar.finish()
 
 
+    def guassian(self):
+        bar = ChargingBar('Gaussian filter', max = 2, fill = '▰', suffix='%(percent)d%%')        
+
+        size = 2 * 3 + 1
+        sigma = 1
+        kernel = []
+
+        for i in range(size):
+            row = []
+            for j in range(size):
+                row.append(0)
+            kernel.append(row)
+
+        for i in range(size):
+            for j in range(size):
+                kernel[i][j] = math.exp(-((i - size // 2) ** 2 + (j - size // 2) ** 2) / (2 * sigma ** 2)) / (2 * math.pi * sigma ** 2)
+        
+
+        for x in range(self.width):
+            for y in range(self.height):
+                r, g, b = 0, 0, 0
+
+                for i in range(size):
+                    for j in range(size):
+                        if x + i < 0 or x + i > self.width - 1 or y + j < 0 or y + j > self.height - 1:
+                            continue
+                        pixel = self.image.getpixel((x + i, y + j))
+                        r += pixel[0] * kernel[i][j]
+                        g += pixel[1] * kernel[i][j]
+                        b += pixel[2] * kernel[i][j]
+                self.newimg.putpixel((x, y), (int(r), int(g), int(b)))
+
+        bar.next()
+        self.newimg.save('Results/Matrix_filters/Gaussian.jpg', 'JPEG')
+        bar.next()
+        bar.finish()
+
 class MathMorph(Filters):
     def dilate(self):
         bar = ChargingBar('Dilate filter', max = 2, fill = '▰', suffix='%(percent)d%%')
@@ -604,9 +643,9 @@ class Other(Filters):
                 b_max = max(b_max, self.image.getpixel((x, y))[2])
         for x in range(self.width):
             for y in range(self.height):
-                r = (self.image.getpixel((x, y))[0] - r_min) * 255 / (r_max - r_min)
-                g = (self.image.getpixel((x, y))[1] - g_min) * 255 / (g_max - g_min)
-                b = (self.image.getpixel((x, y))[2] - b_min) * 255 / (b_max - b_min)
+                r = (self.image.getpixel((x, y))[0] - r_min)/ (r_max - r_min) * 255 
+                g = (self.image.getpixel((x, y))[1] - g_min) / (g_max - g_min) * 255 
+                b = (self.image.getpixel((x, y))[2] - b_min) / (b_max - b_min) * 255 
                 self.newimg.putpixel((x, y), (int(r), int(g), int(b)))
         bar.next()
         self.newimg.save('Results/Other_filters/Histogram_linear_stretch.jpg', 'JPEG')
